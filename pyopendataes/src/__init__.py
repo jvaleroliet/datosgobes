@@ -1,2 +1,1 @@
-from .manager import *
-from .opendataset import *
+from .manager import Manager
