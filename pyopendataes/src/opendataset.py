@@ -72,7 +72,8 @@ class Distribution:
         self.data = data
     
     def __repr__(self):
-        return f"Distribution('{self.access_url}')"
+        return f"Distribution(accessURL={self.access_url}, format={self.format}, byte_size={self.byte_size}, titles={self.titles})"
+
 
     @property
     def access_url(self):
