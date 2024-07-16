@@ -9,13 +9,13 @@ It is inspired in the R library [rOpenSpain/opendataes](https://github.com/rOpen
 Once installed, you can start using pyopendataes by importing it in your python script:
 
 ```python
-import pyopendataes as pode
+import pyopendataes 
 ```
 
 First, you need to initialize the manager:
 
 ```python
-manager = pode.Manager()
+manager = Manager()
 ```
 
 Then, you can use the manager to search for datasets:
