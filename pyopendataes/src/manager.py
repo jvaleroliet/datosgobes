@@ -93,13 +93,6 @@ class Manager:
         dataset = OpenDataSet(url=dataset_meta["_about"])
         return dataset
     
-    def get_dataset(self, uid: str) -> OpenDataSet:
-        form_list = [f for f in self._assets if f["uid"] == uid]
-
-        if len(form_list) == 0:
-            raise ValueError(f"There is no form with the uid: {uid}.")
-
-        form = form_list[0]
-        kform = self._create_koboform(form)
-
-        return kform
+    def get_dataset(self, id: str) -> OpenDataSet:
+        dataset = OpenDataSet(url=f'{self.url}/catalog/dataset/{id}')
+        return dataset
