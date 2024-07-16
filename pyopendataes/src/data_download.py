@@ -31,10 +31,14 @@ def download_data(url, output_file=None):
             else:
                 # Try loading data as pandas DataFrame based on content type and potential extensions
                 try:
-                    if content_type:
+                    if content_type:                        
                         if content_type.startswith('text/csv'):
-                            return pd.read_csv(url, engine='python')
-
+                            encodings = ['utf-8', 'latin-1', 'cp1252']  # Common encodings to try
+                            for encoding in encodings:
+                                try:
+                                    return pd.read_csv(url, engine='python', encoding=encoding)
+                                except:
+                                    pass  # Ignore parsing errors and try next encoding
                         elif content_type.startswith('application/json'):
                             # Likely JSON format
                             return pd.read_json(response.content)
