@@ -48,12 +48,13 @@ class OpenDataSet:
 
     def get_distribution_by_format(self, format):
         """
-        Returns the distribution information for a specific format (e.g., application/geo+pdf).
+        Returns the distribution information for a specific format (e.g., text/csv).
         """
+        matched_distributions = []
         for distribution in self.distributions:
-            if distribution['format']['value'] == format:
-                return distribution
-        return None
+            if distribution['format'] == format:
+                matched_distributions+= [distribution]
+        return matched_distributions
     
     @property
     def distributions(self):
