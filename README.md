@@ -1,12 +1,21 @@
-# pyopendataes
+# datosgobes
 
 ## Introduction
-pyopendataes is a python library that provides a simple interface to access the open data API of [https://datos.gob.es/es/](https://datos.gob.es/es/). The package is designed to make it easy for users to retrieve and analyze data from the API.
+datosgobes is a python library that provides a simple interface to access the open data API of [https://datos.gob.es/es/](https://datos.gob.es/es/). The package is designed to make it easy for users to retrieve and analyze data from the API.
 
 It is inspired in the R library [rOpenSpain/opendataes](https://github.com/rOpenSpain/opendataes).
 
+## Installation
+
+You can install datosgobes using pip:
+
+```python
+pip install datosgobes
+```
+
+
 ## Usage
-Once installed, you can start using pyopendataes by importing it in your python script:
+Once installed, you can start using datosgobes by importing it in your python script:
 
 ```python
 import datosgobes 
@@ -71,4 +80,4 @@ If you want to contribute to the project, you can fork the repository and submit
 
 ## License
 
-pyopendataes is released under the MIT license.
+datosgobes is released under the MIT license.
