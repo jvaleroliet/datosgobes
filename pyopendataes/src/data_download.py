@@ -33,7 +33,7 @@ def download_data(url, output_file=None):
                 try:
                     if content_type:                        
                         if content_type.startswith('text/csv'):
-                            encodings = ['utf-8', 'latin-1', 'cp1252']  # Common encodings to try
+                            encodings = ['utf-8', 'latin-1', 'cp1252', 'utf-16']  # Common encodings to try
                             for encoding in encodings:
                                 try:
                                     return pd.read_csv(url, engine='python', encoding=encoding)
