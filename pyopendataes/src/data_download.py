@@ -16,7 +16,7 @@ def download_data(url, output_file=None):
         pandas.DataFrame | bytes | None: The loaded DataFrame on success, raw bytes on unknown format, or None on errors.
     """
     try:
-        response = requests.get(url, stream=True)
+        response = requests.get(url, allow_redirects=True, stream=True)
 
         if response.status_code == 200:
             # Check for content-type header
