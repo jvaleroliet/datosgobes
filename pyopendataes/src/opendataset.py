@@ -45,6 +45,16 @@ class OpenDataSet:
             keywords.setdefault(lang_code, set()).add(keyword)
         return {lang: list(values) for lang, values in keywords.items()}
 
+    @property
+    def distributions(self):
+        """
+        Returns a list of Distribution objects, each containing information for a single distribution.
+        """
+        distributions = self.metadata.get('distribution', [])
+        distribution_objects = []
+        for distribution_data in distributions:
+            distribution_objects.append(Distribution(distribution_data))
+        return distribution_objects
 
     def get_distribution_by_format(self, format):
         """
@@ -52,23 +62,31 @@ class OpenDataSet:
         """
         matched_distributions = []
         for distribution in self.distributions:
-            if distribution['format'] == format:
-                matched_distributions+= [distribution]
+            if distribution.format == format:
+                matched_distributions.append(distribution)
         return matched_distributions
     
+    
+class Distribution:
+    def __init__(self, data):
+        self.data = data
+    
+    def __repr__(self):
+        return f"Distribution('{self.access_url}')"
+
     @property
-    def distributions(self):
-        """
-        Returns a list of dictionaries, each containing information for a single distribution.
-        """
-        distributions = self.metadata.get('distribution', [])
-        info_list = []
-        for distribution in distributions:
-            info = {}
-            info['accessURL'] = distribution.get('accessURL')
-            info['byteSize'] = distribution.get('byteSize')
-            info['format'] = distribution.get('format')['value']  # Extract format value
-            # Extract title information for all languages efficiently
-            info["titles"] = {d['_lang']:d['_value'] for d in distribution.get('title', [])}
-            info_list.append(info)
-        return info_list
+    def access_url(self):
+        return self.data.get('accessURL')
+
+    @property
+    def byte_size(self):
+        return self.data.get('byteSize')
+
+    @property
+    def format(self):
+        return self.data.get('format')['value']
+
+    @property
+    def titles(self):
+        # Extract title information for all languages efficiently
+        return {d['_lang']: d['_value'] for d in self.data.get('title', [])}
