@@ -1,15 +1,18 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="pygepeto",
-    version="0.3",
-    author="Begoña Lazo, Jeisson Peña & Juan Valero",
+    name="datosgobes",
+    description="Python package to access Spanish Government Open Data from the datos.gob.es API",
+    version="0.1.0",
+    author="Juan Valero",
+    author_email="olietvalero@gmail.com",
+    url="https://github.com/jvaleroliet/datosgobes",
+    license="MIT",
     packages=find_packages(),
     install_requires=[
-        "numpy>=1.25.2,<1.26.0",
-        "pandas>=1.5.3,<2.2.0",
-        # "PyDase @ git+ssh://git@github.com/ACHESP/PyDase.git@dev",
-        "openpyxl==3.0.10"
-        ],
-    include_package_data=True,
+        "pandas>=2.2.0",
+        "requests>=2.31.0",
+        "numpy==1.26.4"
+    ],
+    python_requires=">=3.9",
 )
