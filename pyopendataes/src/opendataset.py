@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import requests
+from .data_download import download_data
 
 
 class OpenDataSet:
@@ -68,8 +69,8 @@ class OpenDataSet:
     
     
 class Distribution:
-    def __init__(self, data):
-        self.data = data
+    def __init__(self, metadata):
+        self.metadata = metadata
     
     def __repr__(self):
         return f"Distribution(accessURL={self.access_url}, format={self.format}, byte_size={self.byte_size}, titles={self.titles})"
@@ -77,17 +78,41 @@ class Distribution:
 
     @property
     def access_url(self):
-        return self.data.get('accessURL')
+        return self.metadata.get('accessURL')
 
     @property
     def byte_size(self):
-        return self.data.get('byteSize')
+        return self.metadata.get('byteSize')
 
     @property
     def format(self):
-        return self.data.get('format')['value']
+        return self.metadata.get('format')['value']
 
     @property
     def titles(self):
         # Extract title information for all languages efficiently
-        return {d['_lang']: d['_value'] for d in self.data.get('title', [])}
+        return {d['_lang']: d['_value'] for d in self.metadata.get('title', [])}
+    
+    def download_data(self, output_file=None):
+        """
+        Downloads the data from the distribution URL and optionally saves it to a file or attempts to load it as a pandas DataFrame.
+
+        This method utilizes the download_data function from the data_download module.
+
+        Args:
+            output_file (str, optional): Path to the file where downloaded data should be saved.
+                Defaults to None.
+
+        Returns:
+            pandas.DataFrame | bytes | None: The loaded DataFrame on success, raw bytes on unknown format, or None on errors.
+        """
+        return download_data(self.access_url, output_file)
+    
+    @property
+    def data(self):
+        """
+        Returns the downloaded data as a pandas DataFrame, raw bytes, or None if not downloaded yet.
+        """
+        if self.access_url:
+            return self.download_data()  # Download data if not already downloaded
+        return None
