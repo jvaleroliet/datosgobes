@@ -6,6 +6,8 @@ class Manager:
     def __init__(self) -> None:
         self.url = "http://datos.gob.es/apidata" 
         self._search_result = None   
+        ## based on https://stackoverflow.com/questions/41946166/requests-get-returns-403-while-the-same-url-works-in-browser
+        self.headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36'}
 
     def _list_datasets(self, start_page=0, pages_limit=1):
         """Get the collection of datasets from the portal. The collection is huge, so be sure to limit the number of pages to download.
@@ -22,7 +24,7 @@ class Manager:
         i = start_page
         while start_url and i<pages_limit+start_page:
             # Download the page
-            response = requests.get(start_url)
+            response = requests.get(start_url, headers=self.headers)
             data = response.json()
 
             # Extract and normalize the datasets
@@ -54,7 +56,7 @@ class Manager:
         i = start_page
         while start_url and i<pages_limit+start_page:
             # Download the page
-            response = requests.get(start_url)
+            response = requests.get(start_url, headers=self.headers)
             data = response.json()
 
             # Extract and normalize the datasets
