@@ -34,7 +34,10 @@ class Manager:
             all_datasets += page_datasets
 
             # Obtain the URL for the next page
-            next_page_url = data["result"]["next"]
+            if "next" in data["result"].keys():
+                next_page_url = data["result"]["next"]
+            else:
+                next_page_url = None
             start_url = next_page_url if next_page_url else None
             if pages_limit != None:
                 i+=1
