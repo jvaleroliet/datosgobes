@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name="datosgobes",
     description="Python package to access Spanish Government Open Data from the datos.gob.es API",
-    version="0.1.1",
+    version="0.1.2",
     author="Juan Valero",
     author_email="olietvalero@gmail.com",
     url="https://github.com/jvaleroliet/datosgobes",
