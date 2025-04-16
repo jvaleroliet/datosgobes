@@ -3,9 +3,16 @@ import pandas as pd
 from .opendataset import OpenDataSet
 
 class Manager:
-    def __init__(self) -> None:
+    def __init__(self, headers=None) -> None:
         self.url = "http://datos.gob.es/apidata" 
         self._search_result = None   
+        ## based on https://stackoverflow.com/questions/41946166/requests-get-returns-403-while-the-same-url-works-in-browser
+        if headers == True:
+            self.headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36'}
+        elif type(headers) == dict or headers is None:
+            self.headers = headers
+        else:
+            raise ValueError("headers param must be True, None, or a dictionary")
 
     def _list_datasets(self, start_page=0, pages_limit=1):
         """Get the collection of datasets from the portal. The collection is huge, so be sure to limit the number of pages to download.
@@ -22,7 +29,7 @@ class Manager:
         i = start_page
         while start_url and i<pages_limit+start_page:
             # Download the page
-            response = requests.get(start_url)
+            response = requests.get(start_url, headers=self.headers)
             data = response.json()
 
             # Extract and normalize the datasets
@@ -32,7 +39,10 @@ class Manager:
             all_datasets += page_datasets
 
             # Obtain the URL for the next page
-            next_page_url = data["result"]["next"]
+            if "next" in data["result"].keys():
+                next_page_url = data["result"]["next"]
+            else:
+                next_page_url = None
             start_url = next_page_url if next_page_url else None
             if pages_limit != None:
                 i+=1
@@ -54,7 +64,7 @@ class Manager:
         i = start_page
         while start_url and i<pages_limit+start_page:
             # Download the page
-            response = requests.get(start_url)
+            response = requests.get(start_url, headers=self.headers)
             data = response.json()
 
             # Extract and normalize the datasets
@@ -64,7 +74,10 @@ class Manager:
             all_datasets += page_datasets
 
             # Obtain the URL for the next page
-            next_page_url = data["result"]["next"]
+            if "next" in data["result"].keys():
+                next_page_url = data["result"]["next"]
+            else:
+                next_page_url = None
             start_url = next_page_url if next_page_url else None
             if pages_limit != None:
                 i+=1
@@ -90,9 +103,11 @@ class Manager:
         return datasets
     
     def _create_dataset(self, dataset_meta: dict) -> OpenDataSet:
-        dataset = OpenDataSet(url=dataset_meta["_about"])
+        dataset = OpenDataSet(url=dataset_meta["_about"],
+                              headers=self.headers)
         return dataset
     
     def get_dataset(self, id: str) -> OpenDataSet:
-        dataset = OpenDataSet(url=f'{self.url}/catalog/dataset/{id}')
+        dataset = OpenDataSet(url=f'{self.url}/catalog/dataset/{id}',
+                              headers=self.headers)
         return dataset
