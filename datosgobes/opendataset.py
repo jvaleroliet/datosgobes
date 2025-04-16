@@ -5,10 +5,17 @@ from .data_download import download_data
 
 
 class OpenDataSet:
-    def __init__(self, url:str):
+    def __init__(self, url:str, headers=None):
         self.url = url
         self.id = url.split('/')[-1]
         # self.metadata = {}
+        ## based on https://stackoverflow.com/questions/41946166/requests-get-returns-403-while-the-same-url-works-in-browser
+        if headers == True:
+            self.headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36'}
+        elif type(headers) == dict or headers is None:
+            self.headers = headers
+        else:
+            raise ValueError("headers param must be True, None, or a dictionary")
     
     def __repr__(self):
         return f"OpenDataSet('{self.id}')"
@@ -16,7 +23,8 @@ class OpenDataSet:
     @property    
     def metadata(self):
         # Fetch metadata from the API
-        response = requests.get(f"http://datos.gob.es/apidata/catalog/dataset/{self.id}")
+        response = requests.get(f"http://datos.gob.es/apidata/catalog/dataset/{self.id}",
+                                headers=self.headers)
         return response.json()["result"]["items"][0]
         
 
